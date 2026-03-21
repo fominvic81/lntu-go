@@ -104,7 +104,6 @@ type Server struct {
 	Port       int      `json:"port"`
 	Debug      bool     `json:"debug"`
 	AllowedIPs []string `json:"allowed_ips"`
-	Test       map[any]any
 }
 
 func toJSON(w *JsonWriter, value any) error {
@@ -180,7 +179,7 @@ func toJSON(w *JsonWriter, value any) error {
 			w.EndObject()
 			return nil
 		case reflect.Func:
-			return fmt.Errorf("can not convert function to json")
+			return fmt.Errorf("can not convert function to json at path '%v'", strings.Join(w.Path, "."))
 		}
 	}
 	return fmt.Errorf("unsupported type %T at path '%v'", value, strings.Join(w.Path, "."))
